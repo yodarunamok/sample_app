@@ -3,7 +3,7 @@
 }
 
 body {
-    background: #cff;
+    background: #003333;
 }
 
 header {
@@ -24,6 +24,18 @@ section {
 
 section h1 {
     font-size: 200%;
+}
+
+footer {
+    text-align: center;
+    margin-top: 10px;
+    width: 710px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer nav {
+    float: none;
 }
 
 /* Links */
