@@ -22,3 +22,6 @@ doc/
 
 # Ignore RubyMine's idea directory
 /.idea
+
+# Ignore development database
+db/development
