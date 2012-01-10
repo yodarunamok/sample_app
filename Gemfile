@@ -5,10 +5,14 @@ gem 'rails', '3.1.3'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3-ruby', :require => 'sqlite3'
-
 # riak
 gem 'ripple', '~>1.0.0beta'
+
+# Gravatar
+gem 'gravatar_image_tag', '~>1.0.0'
+
+#HAML
+gem 'haml', '~>3.2.0.alpha'
 
 # Gems used only in development or test
 group :development do
@@ -19,6 +23,7 @@ end
 group :test do
   gem 'rspec-rails', '2.6.1'
   gem 'webrat', '0.7.3'
+  gem 'factory_girl_rails', '~> 1.4.0'
 end
 
 
