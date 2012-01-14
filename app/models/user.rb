@@ -54,9 +54,7 @@ class User
   class << self
     def authenticate(email, submitted_password)
       user = find_by_email(email)
-      return nil if user.nil?
-      return user if user.has_password?(submitted_password)
-      nil # Returned if no conditions met (explicit to avoid IDE griping)
+      user && user.has_password?(submitted_password) ? user : nil
     end
 
     # Find and return a user by their email
@@ -66,6 +64,16 @@ class User
         return User.find(result['response']['docs'][0]['id']) # is this the best way?
       end
       nil # Returned if no conditions met (explicit to avoid IDE griping)
+    end
+
+    def stats
+      # Returns a hash with keys: count, min, max, percentile25, median, percentile75, percentile99, mean, sum, variance, sdev
+      client = Ripple::client
+      Riak::MapReduce.new(client).add('users').map('Contrib.mapCount').reduce('Contrib.reduceStats', :keep => true).run
+    end
+
+    def count
+      stats['count']
     end
   end
   # End Class methods
