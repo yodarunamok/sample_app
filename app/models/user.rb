@@ -2,7 +2,7 @@ require 'digest'
 
 class IsUniqueValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    if value.length > 0
+    if value.strip.length > 0
       result = Ripple::client.search('users', "#{attribute.to_s}:#{value.downcase}")
       # Uniqueness can either be the result of a non-present value, or an update to the same record
       record.errors.add attribute, "must be unique" unless result['response']['numFound'] == 0 or
@@ -57,11 +57,18 @@ class User
       user && user.has_password?(submitted_password) ? user : nil
     end
 
+    def authenticate_with_salt(id, cookie_salt)
+      user = find(id)
+      (user && user.salt == cookie_salt) ? user : nil
+    end
+
     # Find and return a user by their email
     def find_by_email(email)
-      result = Ripple::client.search('users', "email:#{email.downcase}")
-      if result['response']['numFound'] == 1
-        return User.find(result['response']['docs'][0]['id']) # is this the best way?
+      if email.strip.length > 0
+        result = Ripple::client.search('users', "email:#{email.downcase}")
+        if result['response']['numFound'] == 1
+          return User.find(result['response']['docs'][0]['id']) # is this the best way?
+        end
       end
       nil # Returned if no conditions met (explicit to avoid IDE griping)
     end
